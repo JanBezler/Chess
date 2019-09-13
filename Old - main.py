@@ -36,20 +36,24 @@ class main(object):
 
             self.draw()
 
-            if pressed3: self.active = False
+            #if pressed1 or pressed3: self.active = False
 
 
-            if self.drawLabel[3][2].collidepoint(self.pos) and pressed1 and self.active:
-                self.moveFigure(0, 3, 3, 2)
-                self.active = False
+            if pressed1:
 
-                print("lol")
+                if self.drawLabel[3][1].collidepoint(self.pos) and pressed1 and self.active:
+                    self.moveFigure(0, 3, 3, 1)
+                    self.active = False
+
+                    print("lol")
 
 
 
-            if self.K1.collidepoint(self.pos) and pressed1 or self.active:
-                self.active = True
-                #self.K1 = self.screen.blit(self.figureK, (self.pos[0]-40, self.pos[1]-40))
+                if self.K1.collidepoint(self.pos) and pressed1 or self.active:
+                    self.active = True
+
+
+
 
 
 
@@ -114,7 +118,6 @@ class main(object):
 
 
 
-
     def loadData(self):
         img_dir = path.join(path.dirname(__file__), "data/")
         self.figureW = pg.image.load(img_dir + "w.png")
@@ -151,7 +154,7 @@ class main(object):
         self.matrix[1][0] = "P1"
         self.matrix[1][1] = "P2"
         self.matrix[1][2] = "P3"
-        self.matrix[1][3] = "P4"
+        self.matrix[1][0] = "P4"
         self.matrix[1][4] = "P5"
         self.matrix[1][5] = "P6"
         self.matrix[1][6] = "P7"
