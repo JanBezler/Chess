@@ -49,7 +49,7 @@ class main(object):
     def moveFigure(self, fr1, fr2, to1, to2):
         if fr1 != to1 or fr2 != to2:
             if self.matrix[fr1][fr2] != 0:
-                self.matrix[to1][to2\\] = self.matrix[fr1][fr2]
+                self.matrix[to1][to2] = self.matrix[fr1][fr2]
                 self.matrix[fr1][fr2] = 0
 
     def draw(self):
