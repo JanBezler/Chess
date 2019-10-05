@@ -13,6 +13,8 @@ class main(object):
         pg.init()
         pg.display.set_caption("Game")
 
+        self.whitef = ["P1","P2","P3","P4","P5","P6","P7","P8","W1","W2","G1","G2","S1","S2","H","K"]
+        self.blackf = ["PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","WC1","WC2","GC1","GC2","SC1","SC2","HC","KC"]
         self.selected = []
         self.possibilities = []
         self.player = 0
@@ -29,11 +31,10 @@ class main(object):
                     self.hor = pg.mouse.get_pos()[0] / 80
                     self.ver = pg.mouse.get_pos()[1] / 80
 
-                    self.selected.insert(0,{"h":self.hor,"v":self.ver,"t":self.matrix[int(self.ver)][int(self.hor)]})
+                    self.selected.insert(0,{"h":int(self.hor),"v":int(self.ver),"t":self.matrix[int(self.ver)][int(self.hor)]})
                     try:
 
-                        self.moveFigure(int(self.selected[1].get("v")),int(self.selected[1].get("h")),int(self.selected[0].get("v")),int(self.selected[0].get("h")))
-                        print(self.selected[0])
+                        self.validate()
 
                     except: pass
 
@@ -42,11 +43,33 @@ class main(object):
 
     def moveFigure(self, fr1, fr2, to1, to2):
         if fr1 != to1 or fr2 != to2:
-            if self.matrix[fr1][fr2] != 0:
+            if self.matrix[fr1][fr2] != "O":
                 self.matrix[to1][to2] = self.matrix[fr1][fr2]
-                self.matrix[fr1][fr2] = 0
+                self.matrix[fr1][fr2] = "O"
                 self.player += 1
                 self.selected.clear()
+
+
+    def validate(self):
+        if self.whitef.count(self.selected[0].get("t")) == 1:
+            if self.whitef.count(self.selected[0].get("t")) == self.whitef.count(self.selected[1].get("t")):
+                return 0
+
+        if self.blackf.count(self.selected[0].get("t")) == 1:
+            if self.blackf.count(self.selected[0].get("t")) == self.blackf.count(self.selected[1].get("t")):
+                return 0
+
+        if self.selected[1].get("t") == "W1" or self.selected[1].get("t") == "W2" \
+                or self.selected[1].get("t") == "WC1" or self.selected[1].get("t") == "WC2":
+
+            ##################################################################################################################
+
+
+
+
+            pass
+        self.moveFigure(self.selected[1].get("v"), self.selected[1].get("h"), self.selected[0].get("v"),
+                        self.selected[0].get("h"))
 
 
     def draw(self):
@@ -80,10 +103,10 @@ class main(object):
                 if self.matrix[i][j] == "PC6": self.PC6 = self.screen.blit(self.figurePC, (j * 80, i * 80))
                 if self.matrix[i][j] == "PC7": self.PC7 = self.screen.blit(self.figurePC, (j * 80, i * 80))
                 if self.matrix[i][j] == "PC8": self.PC8 = self.screen.blit(self.figurePC, (j * 80, i * 80))
-                if self.matrix[i][j] == "K": self.K1 = self.screen.blit(self.figureK, (j * 80, i * 80))
-                if self.matrix[i][j] == "KC": self.KC1 = self.screen.blit(self.figureKC, (j * 80, i * 80))
-                if self.matrix[i][j] == "H": self.H1 = self.screen.blit(self.figureH, (j * 80, i * 80))
-                if self.matrix[i][j] == "HC": self.HC1 = self.screen.blit(self.figureHC, (j * 80, i * 80))
+                if self.matrix[i][j] == "K": self.K = self.screen.blit(self.figureK, (j * 80, i * 80))
+                if self.matrix[i][j] == "KC": self.KC = self.screen.blit(self.figureKC, (j * 80, i * 80))
+                if self.matrix[i][j] == "H": self.H = self.screen.blit(self.figureH, (j * 80, i * 80))
+                if self.matrix[i][j] == "HC": self.HC = self.screen.blit(self.figureHC, (j * 80, i * 80))
                 if self.matrix[i][j] == "W1": self.W1 = self.screen.blit(self.figureW, (j * 80, i * 80))
                 if self.matrix[i][j] == "W2": self.W2 = self.screen.blit(self.figureW, (j * 80, i * 80))
                 if self.matrix[i][j] == "WC1": self.WC1 = self.screen.blit(self.figureWC, (j * 80, i * 80))
@@ -100,7 +123,7 @@ class main(object):
                              pg.Rect(int(pg.mouse.get_pos()[0] / 80) * 80, int(pg.mouse.get_pos()[1] / 80) * 80, 80,
                                      80), 4)
         try:
-            pg.draw.rect(self.screen, (200, 40, 40), pg.Rect(int(self.hor) * 80, int(self.ver) * 80, 80, 80), 2)
+            pg.draw.rect(self.screen, (200, 40, 40), pg.Rect(self.selected[0].get("h") * 80, self.selected[0].get("v") * 80, 80, 80), 2)
         except: pass
 
         if self.player % 2 == 0:
@@ -132,7 +155,7 @@ class main(object):
         for i in range(8):
             self.matrix.append([])
             for j in range(8):
-                self.matrix[i].append(0)
+                self.matrix[i].append("O")
 
         self.matrix[0][0] = "W1"
         self.matrix[0][1] = "S1"
