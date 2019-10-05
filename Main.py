@@ -14,6 +14,8 @@ class main(object):
         pg.display.set_caption("Game")
 
         self.selected = []
+        self.possibilities = []
+        self.player = 0
 
 
         while True:
@@ -29,12 +31,12 @@ class main(object):
 
                     self.selected.insert(0,{"h":self.hor,"v":self.ver,"t":self.matrix[int(self.ver)][int(self.hor)]})
                     try:
-                        print("1:",self.selected[1].get("h"), self.selected[1].get("v"))
-                        print("2:",self.selected[0].get("h"), self.selected[0].get("v"))
-                        self.moveFigure(int(self.selected[1].get("v")),int(self.selected[1].get("h")),int(self.selected[0].get("v")),int(self.selected[0].get("h")))
 
+                        self.moveFigure(int(self.selected[1].get("v")),int(self.selected[1].get("h")),int(self.selected[0].get("v")),int(self.selected[0].get("h")))
+                        print(self.selected[0])
 
                     except: pass
+
 
 
 
@@ -43,6 +45,9 @@ class main(object):
             if self.matrix[fr1][fr2] != 0:
                 self.matrix[to1][to2] = self.matrix[fr1][fr2]
                 self.matrix[fr1][fr2] = 0
+                self.player += 1
+                self.selected.clear()
+
 
     def draw(self):
 
@@ -97,6 +102,11 @@ class main(object):
         try:
             pg.draw.rect(self.screen, (200, 40, 40), pg.Rect(int(self.hor) * 80, int(self.ver) * 80, 80, 80), 2)
         except: pass
+
+        if self.player % 2 == 0:
+            self.screen.blit(pg.font.SysFont('Times New Roman', 48).render(("White turn"), True, (230, 230, 100)), (648, 10))
+        else:
+            self.screen.blit(pg.font.SysFont('Times New Roman', 48).render(("Black turn"), True, (230, 230, 100)), (648, 570))
 
         pg.display.flip()
 
@@ -166,6 +176,6 @@ class main(object):
         for i in range(len(self.matrix)):
             print(self.matrix[i])
 
-
-if __name__ == "__main__":
-    main()
+while True:
+    if __name__ == "__main__":
+        main()
